@@ -7,6 +7,8 @@ info:
     version: 1.0
 
 spring:
+  application:
+    name: Case API
   datasource:
     url: jdbc:postgresql://localhost:5432/rm?readOnly=true
     username: appuser
@@ -33,6 +35,13 @@ spring:
           flow-control:
             max-outstanding-element-count: 100
 
+  jackson:
+    # Boot 4 migration: freeze the wire format at Jackson 2 behaviour so this
+    # release changes no API contract. Jackson 3 defaults would re-order every
+    # response alphabetically. Keep the existing ISO-8601 java.time output from
+    # the shared ObjectMapperFactory. REMOVE in H2 2027 as its own announced
+    # change.
+    use-jackson2-defaults: true
 
 logging:
   profile: DEV
@@ -48,10 +57,15 @@ exceptionmanager:
 
 management:
   endpoints:
-    enabled-by-default: false
+    access:
+      default: none
+      max-permitted: read-only
   endpoint:
     health:
-      enabled: true
+      access: read-only
+      probes:
+        enabled: true
+
   metrics:
     tags:
       application: Case API
