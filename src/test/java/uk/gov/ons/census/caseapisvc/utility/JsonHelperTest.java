@@ -3,6 +3,8 @@ package uk.gov.ons.census.caseapisvc.utility;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.ons.census.caseapisvc.utility.Constants.ALLOWED_INBOUND_EVENT_SCHEMA_VERSIONS;
+import static uk.gov.ons.census.caseapisvc.utility.Constants.EVENT_SCHEMA_VERSION;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.ons.census.caseapisvc.model.dto.EventDTO;
@@ -13,22 +15,22 @@ class JsonHelperTest {
 
   @Test
   void convertObjectToJson_serializesEvent() {
-    EventDTO event = createEvent("0.5.0");
+    EventDTO event = createEvent(EVENT_SCHEMA_VERSION);
 
     String json = JsonHelper.convertObjectToJson(event);
 
-    assertThat(json).contains("\"version\":\"0.5.0\"");
+    assertThat(json).contains("\"version\":\"" + EVENT_SCHEMA_VERSION + "\"");
     assertThat(json).contains("\"topic\":\"test-topic\"");
   }
 
   @Test
   void convertJsonBytesToEvent_deserializesSupportedVersion() {
-    EventDTO event = createEvent("0.5.0");
+    EventDTO event = createEvent(EVENT_SCHEMA_VERSION);
 
     EventDTO converted =
         JsonHelper.convertJsonBytesToEvent(JsonHelper.convertObjectToJson(event).getBytes(UTF_8));
 
-    assertThat(converted.getHeader().getVersion()).isEqualTo("0.5.0");
+    assertThat(converted.getHeader().getVersion()).isEqualTo(EVENT_SCHEMA_VERSION);
     assertThat(converted.getHeader().getTopic()).isEqualTo("test-topic");
   }
 
@@ -45,6 +47,7 @@ class JsonHelperTest {
 
     assertThat(ex.getMessage()).contains("Unsupported message version");
     assertThat(ex.getMessage()).contains("0.1.0");
+    assertThat(ex.getMessage()).contains(String.join(", ", ALLOWED_INBOUND_EVENT_SCHEMA_VERSIONS));
   }
 
   @Test
