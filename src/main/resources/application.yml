@@ -38,8 +38,9 @@ spring:
   jackson:
     # Boot 4 migration: freeze the wire format at Jackson 2 behaviour so this
     # release changes no API contract. Jackson 3 defaults would re-order every
-    # response alphabetically and serialise java.time as ISO-8601 strings
-    # instead of epoch numbers. REMOVE in H2 2027 as its own announced change.
+    # response alphabetically. Keep the existing ISO-8601 java.time output from
+    # the shared ObjectMapperFactory. REMOVE in H2 2027 as its own announced
+    # change.
     use-jackson2-defaults: true
 
 logging:
@@ -63,7 +64,7 @@ management:
     health:
       access: read-only
       probes:
-        enabled: false
+        enabled: true
 
   metrics:
     tags:
