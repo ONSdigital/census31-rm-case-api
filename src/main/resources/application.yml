@@ -29,7 +29,6 @@ spring:
   cloud:
     gcp:
       pubsub:
-        emulator-host: localhost:8538
         project-id: our-project
         subscriber:
           flow-control:
