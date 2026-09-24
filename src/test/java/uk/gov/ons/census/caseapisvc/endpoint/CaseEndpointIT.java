@@ -65,6 +65,7 @@ public class CaseEndpointIT {
   @Autowired private CollectionExerciseRepository collectionExerciseRepository;
   @Autowired private SurveyRepository surveyRepository;
   @Autowired private UacQidLinkRepository uacQidLinkRepository;
+  @Autowired private ActionRuleRepository actionRuleRepository;
 
   private EasyRandom easyRandom;
 
@@ -86,6 +87,7 @@ public class CaseEndpointIT {
   public void clearDown() {
     eventRepository.deleteAllInBatch();
     uacQidLinkRepository.deleteAllInBatch();
+    actionRuleRepository.deleteAllInBatch();
     caseRepository.deleteAllInBatch();
     collectionExerciseRepository.deleteAllInBatch();
     surveyRepository.deleteAllInBatch();
