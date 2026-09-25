@@ -2,18 +2,26 @@ package uk.gov.ons.census.caseapisvc.endpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@Import(DocumentationGeneratorIT.OpenApiDocumentationConfiguration.class)
 public class DocumentationGeneratorIT {
 
   /*Both converters are version-pinned so output is reproducible across machines and time.
@@ -40,6 +48,10 @@ public class DocumentationGeneratorIT {
     String url = "http://localhost:" + port + "/v3/api-docs";
     String apiSpec = restTemplate.getForObject(url, String.class);
     assertThat(apiSpec).isNotBlank();
+    JsonNode apiSpecRoot = new ObjectMapper().readTree(apiSpec);
+    assertThat(apiSpecRoot.has("security")).isTrue();
+    assertThat(apiSpecRoot.path("security").isArray()).isTrue();
+    assertThat(apiSpecRoot.path("security").size()).isZero();
 
     Path outputDir = Path.of("api-docs");
     Files.createDirectories(outputDir);
@@ -82,5 +94,13 @@ public class DocumentationGeneratorIT {
               + output);
     }
     return exitStatus;
+  }
+
+  @TestConfiguration(proxyBeanMethods = false)
+  static class OpenApiDocumentationConfiguration {
+    @Bean
+    OpenApiCustomizer explicitNoApplicationSecurity() {
+      return openApi -> openApi.setSecurity(List.of());
+    }
   }
 }
