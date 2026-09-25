@@ -4,9 +4,12 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EntityScan("uk.gov.ons.census.common.model.entity")
@@ -24,5 +27,12 @@ import org.springframework.boot.persistence.autoconfigure.EntityScan;
 public class Application {
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
+  }
+
+  @Bean
+  OpenAPI openApiWithoutApplicationSecurity() {
+    OpenAPI openApi = new OpenAPI();
+    openApi.setSecurity(List.of());
+    return openApi;
   }
 }
