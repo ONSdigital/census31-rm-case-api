@@ -8,21 +8,35 @@ on:
 
 jobs:
   generate-openapi-spec:
-    # TODO: This job is temporarily disabled because it depends on the ONSdigital/census-rm-common-entity-model
-    # repository being accessible (currently returns 404 - Not Found). This will be re-enabled once the
-    # dependent work to publish artifacts to GCR Artifactory is completed (see related <WIP> ticket).
-    # To re-enable: remove the `if: false` line below.
-    if: false
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout Repository Code.
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
+      # The Maven dependencies and integration-test images are in Artifact Registry.
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ secrets.GCP_CI_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_CI_SERVICE_ACCOUNT }}
+
+      - name: Log in to Google Docker Artifact Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: europe-west2-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
       - name: Set up JDK 21 Runtime.
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           java-version: "21"
           distribution: "temurin"
@@ -32,29 +46,12 @@ jobs:
       # Pinned explicitly because @redocly/cli 2.x requires Node >= 22.12 — we no
       # longer rely on whatever happens to be preinstalled on the runner image.
       - name: Set up Node.js Runtime.
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "22"
 
-      - name: Checkout common entity model.
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-        with:
-          persist-credentials: false
-          repository: ONSdigital/census-rm-common-entity-model
-          path: deps/census-rm-common-entity-model
-
-      - name: Install common entity model to local Maven repo.
-        run: mvn -B -f deps/census-rm-common-entity-model/pom.xml clean install -DskipTests
-
-      - name: Checkout shared sample validation.
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-        with:
-          persist-credentials: false
-          repository: ONSdigital/census-rm-shared-sample-validation
-          path: deps/census-rm-shared-sample-validation
-
-      - name: Install shared sample validation to local Maven repo.
-        run: mvn -B -f deps/census-rm-shared-sample-validation/pom.xml clean install -DskipTests
+      - name: Set up Docker network
+        run: docker network create censusrmdockerdev_default
 
       - name: Verify Spotless Formatting and PMD Rules.
         run: mvn spotless:check pmd:check
