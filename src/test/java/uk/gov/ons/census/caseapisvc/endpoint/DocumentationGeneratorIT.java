@@ -2,8 +2,6 @@ package uk.gov.ons.census.caseapisvc.endpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -18,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.JsonNode;
+import uk.gov.ons.census.caseapisvc.utility.ObjectMapperFactory;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -48,7 +48,7 @@ public class DocumentationGeneratorIT {
     String url = "http://localhost:" + port + "/v3/api-docs";
     String apiSpec = restTemplate.getForObject(url, String.class);
     assertThat(apiSpec).isNotBlank();
-    JsonNode apiSpecRoot = new ObjectMapper().readTree(apiSpec);
+    JsonNode apiSpecRoot = ObjectMapperFactory.objectMapper().readTree(apiSpec);
     assertThat(apiSpecRoot.has("security")).isTrue();
     assertThat(apiSpecRoot.path("security").isArray()).isTrue();
     assertThat(apiSpecRoot.path("security").size()).isZero();
