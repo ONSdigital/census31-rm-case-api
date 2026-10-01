@@ -13,6 +13,7 @@
     "url" : "http://localhost:8161",
     "description" : "Case API Service"
   } ],
+  "security" : [ ],
   "tags" : [ {
     "description" : "Services for retrieving and managing questionnaire ID (QID) and UAC link information",
     "name" : "QID Endpoint"
