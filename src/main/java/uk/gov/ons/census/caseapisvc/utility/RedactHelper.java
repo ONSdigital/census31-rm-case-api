@@ -20,7 +20,6 @@ public class RedactHelper {
   private static final ThingToRedact[] THINGS_TO_REDACT = {
     new ThingToRedact("setUac", String.class),
     new ThingToRedact("setPhoneNumber", String.class),
-    new ThingToRedact("setEmail", String.class),
     new ThingToRedact("getPersonalisation", Map.class)
   };
 
