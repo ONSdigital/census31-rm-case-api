@@ -719,10 +719,9 @@
             "example" : true
           },
           "refusalReceived" : {
-            "type" : "string",
-            "description" : "Type of refusal received (HARD_REFUSAL, EXTRAORDINARY_REFUSAL, or null)",
-            "enum" : [ "HARD_REFUSAL", "EXTRAORDINARY_REFUSAL" ],
-            "example" : "EXTRAORDINARY_REFUSAL"
+            "type" : "boolean",
+            "description" : "Flag indicating if the case record is marked as refused",
+            "example" : false
           },
           "region" : {
             "type" : "string",

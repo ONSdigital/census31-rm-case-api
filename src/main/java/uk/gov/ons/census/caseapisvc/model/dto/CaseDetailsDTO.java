@@ -6,7 +6,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Data;
-import uk.gov.ons.census.common.model.entity.RefusalType;
 
 @Data
 @Schema(
@@ -159,9 +158,9 @@ public class CaseDetailsDTO {
   private boolean receiptReceived;
 
   @Schema(
-      description = "Type of refusal received (HARD_REFUSAL, EXTRAORDINARY_REFUSAL, or null)",
-      example = "EXTRAORDINARY_REFUSAL")
-  private RefusalType refusalReceived;
+      description = "Flag indicating if the case record is marked as refused",
+      example = "false")
+  private boolean refusalReceived;
 
   @Schema(
       description = "Flag indicating if the case record is marked as invalid",

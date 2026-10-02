@@ -302,9 +302,8 @@ public class CaseEndpoint {
     caseDetailsDTO.setCeExpectedCapacity(caze.getCeExpectedCapacity());
     caseDetailsDTO.setCollectionExerciseId(caze.getCollectionExercise().getId());
     caseDetailsDTO.setCreatedDateTime(caze.getCreatedAt());
-    ;
     caseDetailsDTO.setReceiptReceived(caze.isReceiptReceived());
-    caseDetailsDTO.setRefusalReceived(caze.getRefusalReceived());
+    caseDetailsDTO.setRefusalReceived(caze.getRefusalReceived() != null);
     caseDetailsDTO.setInvalid(caze.isInvalid());
     caseDetailsDTO.setLastUpdated(caze.getLastUpdatedAt());
     caseDetailsDTO.setPrintBatch(caze.getPrintBatch());
