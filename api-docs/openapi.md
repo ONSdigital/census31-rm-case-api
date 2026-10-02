@@ -866,10 +866,7 @@ Status Code **200**
 |eventType|UPDATE_SAMPLE_SENSITIVE|
 |eventType|SMS_FULFILMENT|
 |eventType|ACTION_RULE_SMS_REQUEST|
-|eventType|EMAIL_FULFILMENT|
-|eventType|ACTION_RULE_EMAIL_REQUEST|
 |eventType|ACTION_RULE_SMS_CONFIRMATION|
-|eventType|ACTION_RULE_EMAIL_CONFIRMATION|
 |eventType|ERASE_DATA|
 
 <aside class="success">
@@ -1540,10 +1537,7 @@ Status Code **200**
 |eventType|UPDATE_SAMPLE_SENSITIVE|
 |eventType|SMS_FULFILMENT|
 |eventType|ACTION_RULE_SMS_REQUEST|
-|eventType|EMAIL_FULFILMENT|
-|eventType|ACTION_RULE_EMAIL_REQUEST|
 |eventType|ACTION_RULE_SMS_CONFIRMATION|
-|eventType|ACTION_RULE_EMAIL_CONFIRMATION|
 |eventType|ERASE_DATA|
 
 <aside class="success">
@@ -2042,10 +2036,7 @@ Enumeration of all possible event types that can occur in the census RM system
 |*anonymous*|UPDATE_SAMPLE_SENSITIVE|
 |*anonymous*|SMS_FULFILMENT|
 |*anonymous*|ACTION_RULE_SMS_REQUEST|
-|*anonymous*|EMAIL_FULFILMENT|
-|*anonymous*|ACTION_RULE_EMAIL_REQUEST|
 |*anonymous*|ACTION_RULE_SMS_CONFIRMATION|
-|*anonymous*|ACTION_RULE_EMAIL_CONFIRMATION|
 |*anonymous*|ERASE_DATA|
 
 <h2 id="tocS_NewQidLink">NewQidLink</h2>
