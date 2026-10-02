@@ -561,7 +561,7 @@
           "createdDateTime" : "2024-01-15T10:30:00Z",
           "events" : [ ],
           "receiptReceived" : true,
-          "refusalReceived" : "HARD_REFUSAL",
+          "refusalReceived" : false,
           "invalid" : false,
           "lastUpdated" : "2024-01-20T14:45:00Z",
           "printBatch" : "15",
