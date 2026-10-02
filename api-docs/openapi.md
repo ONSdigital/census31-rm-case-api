@@ -1944,19 +1944,12 @@ Comprehensive Data Transfer Object containing detailed case attributes
 |postcode|string|false|none|UK postal code|
 |printBatch|string|false|none|Print batch identifier for household initial contact material|
 |receiptReceived|boolean|false|none|Flag indicating if receipt has been received from respondent|
-|refusalReceived|string|false|none|Type of refusal received (HARD_REFUSAL, EXTRAORDINARY_REFUSAL, or null)|
+|refusalReceived|boolean|false|none|Flag indicating if the case record is marked as refused|
 |region|string|false|none|Administrative region code (e.g., N12000009, S12000009, E12000009, W12000009)|
 |surveyLaunched|boolean|false|none|Flag indicating if survey has been launched to respondent|
 |townName|string|false|none|Town or city name|
 |treatmentCode|string|false|none|Treatment code (one of the appropriate ones for the region (e.g., HH_PSCE, HH_PSLE, HH_PNCE, HH_PNLE, HH_OSCE, HH_OSLE, HH_ONCE, HH_ONLE, HH_PSCW, HH_PSLW, HH_PNCW, HH_PN, HH_OSCW, HH_OSLW, HH_ONCW, HH_ONLW, HH_OGXS, HH_OSXS, HH_PBXN, HH_OAXN, HH_OBXN)) indicating special handling or processing instructions for the case|
 |uprn|string|false|none|Unique Property Reference Number|
-
-#### Enumerated Values
-
-|Property|Value|
-|---|---|
-|refusalReceived|HARD_REFUSAL|
-|refusalReceived|EXTRAORDINARY_REFUSAL|
 
 <h2 id="tocS_CaseDetailsEventDTO">CaseDetailsEventDTO</h2>
 <!-- backwards compatibility -->
