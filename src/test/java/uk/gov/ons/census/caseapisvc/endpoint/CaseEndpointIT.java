@@ -126,10 +126,12 @@ public class CaseEndpointIT {
 
     RestTemplate restTemplate = new RestTemplate();
     String url = "http://localhost:" + port + "/cases/" + TEST_CASE_ID_1_EXISTS;
-    ResponseEntity<Case> foundCaseResponse = restTemplate.getForEntity(url, Case.class);
+    ResponseEntity<CaseContainerDTO> foundCaseResponse =
+        restTemplate.getForEntity(url, CaseContainerDTO.class);
 
-    Case actualCase = foundCaseResponse.getBody();
-    assertThat(actualCase.getId()).isEqualTo(UUID.fromString(TEST_CASE_ID_1_EXISTS));
+    CaseContainerDTO actualCase = foundCaseResponse.getBody();
+    assertThat(actualCase).isNotNull();
+    assertThat(actualCase.getCaseId()).isEqualTo(UUID.fromString(TEST_CASE_ID_1_EXISTS));
   }
 
   @Test

@@ -481,11 +481,6 @@
             "description" : "UK postal code",
             "example" : "XX1 0XX"
           },
-          "region" : {
-            "type" : "string",
-            "description" : "Administrative region code (e.g., N12000007, S12000007, E12000007, W12000007)",
-            "example" : "E12000007"
-          },
           "receiptReceived" : {
             "type" : "boolean",
             "description" : "Flag indicating if receipt has been received from respondent",
@@ -495,6 +490,11 @@
             "type" : "boolean",
             "description" : "Flag indicating if any refusal has been received for the case",
             "example" : false
+          },
+          "region" : {
+            "type" : "string",
+            "description" : "Administrative region code (e.g., N12000007, S12000007, E12000007, W12000007)",
+            "example" : "E12000007"
           },
           "secureEstablishment" : {
             "type" : "boolean",

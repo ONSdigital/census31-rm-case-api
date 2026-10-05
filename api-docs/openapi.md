@@ -797,6 +797,9 @@ Retrieves all cases located within the specified postcode area.
     "lastUpdated": "2024-01-20T14:45:00Z",
     "caseEvents": [],
     "secureEstablishment": false,
+    "receiptReceived": true,
+    "refusalReceived": false,
+    "surveyLaunched": true,
     "invalid": false
   }
 ]
@@ -843,8 +846,11 @@ Status Code **200**
 |» oa|string|false|none|Output Area grid reference (e.g., N00073438, S00073438, E00073438, W00073438)|
 |» organisationName|string|false|none|Name of the organisation at the address|
 |» postcode|string|false|none|UK postal code|
+|» receiptReceived|boolean|false|none|Flag indicating if receipt has been received from respondent|
+|» refusalReceived|boolean|false|none|Flag indicating if any refusal has been received for the case|
 |» region|string|false|none|Administrative region code (e.g., N12000007, S12000007, E12000007, W12000007)|
 |» secureEstablishment|boolean|false|none|Indicator whether address is a secure establishment|
+|» surveyLaunched|boolean|false|none|Flag indicating if survey has been launched to respondent|
 |» surveyType|string|false|none|Type of survey (e.g., CENSUS, CCS)|
 |» townName|string|false|none|Town or city name|
 |» uprn|string|false|none|Unique Property Reference Number|
@@ -1060,6 +1066,9 @@ Retrieves minimal case details linked to a specific questionnaire ID.
   "lastUpdated": "2024-01-20T14:45:00Z",
   "caseEvents": [],
   "secureEstablishment": false,
+  "receiptReceived": true,
+  "refusalReceived": false,
+  "surveyLaunched": true,
   "invalid": false
 }
 ```
@@ -1263,6 +1272,9 @@ Retrieves a single case container record using the numeric case reference.
   "lastUpdated": "2024-01-20T14:45:00Z",
   "caseEvents": [],
   "secureEstablishment": false,
+  "receiptReceived": true,
+  "refusalReceived": false,
+  "surveyLaunched": true,
   "invalid": false
 }
 ```
@@ -1468,6 +1480,9 @@ Retrieves all cases associated with a Unique Property Reference Number.
     "lastUpdated": "2024-01-20T14:45:00Z",
     "caseEvents": [],
     "secureEstablishment": false,
+    "receiptReceived": true,
+    "refusalReceived": false,
+    "surveyLaunched": true,
     "invalid": false
   }
 ]
@@ -1514,8 +1529,11 @@ Status Code **200**
 |» oa|string|false|none|Output Area grid reference (e.g., N00073438, S00073438, E00073438, W00073438)|
 |» organisationName|string|false|none|Name of the organisation at the address|
 |» postcode|string|false|none|UK postal code|
+|» receiptReceived|boolean|false|none|Flag indicating if receipt has been received from respondent|
+|» refusalReceived|boolean|false|none|Flag indicating if any refusal has been received for the case|
 |» region|string|false|none|Administrative region code (e.g., N12000007, S12000007, E12000007, W12000007)|
 |» secureEstablishment|boolean|false|none|Indicator whether address is a secure establishment|
+|» surveyLaunched|boolean|false|none|Flag indicating if survey has been launched to respondent|
 |» surveyType|string|false|none|Type of survey (e.g., CENSUS, CCS)|
 |» townName|string|false|none|Town or city name|
 |» uprn|string|false|none|Unique Property Reference Number|
@@ -1732,6 +1750,9 @@ Retrieves a single case container record matching the specified UUID.
   "lastUpdated": "2024-01-20T14:45:00Z",
   "caseEvents": [],
   "secureEstablishment": false,
+  "receiptReceived": true,
+  "refusalReceived": false,
+  "surveyLaunched": true,
   "invalid": false
 }
 ```
@@ -1787,6 +1808,9 @@ This operation does not require authentication
   "lastUpdated": "2024-01-20T14:45:00Z",
   "caseEvents": [],
   "secureEstablishment": false,
+  "receiptReceived": true,
+  "refusalReceived": false,
+  "surveyLaunched": true,
   "invalid": false
 }
 
@@ -1822,8 +1846,11 @@ Data Transfer Object representing a census case container
 |oa|string|false|none|Output Area grid reference (e.g., N00073438, S00073438, E00073438, W00073438)|
 |organisationName|string|false|none|Name of the organisation at the address|
 |postcode|string|false|none|UK postal code|
+|receiptReceived|boolean|false|none|Flag indicating if receipt has been received from respondent|
+|refusalReceived|boolean|false|none|Flag indicating if any refusal has been received for the case|
 |region|string|false|none|Administrative region code (e.g., N12000007, S12000007, E12000007, W12000007)|
 |secureEstablishment|boolean|false|none|Indicator whether address is a secure establishment|
+|surveyLaunched|boolean|false|none|Flag indicating if survey has been launched to respondent|
 |surveyType|string|false|none|Type of survey (e.g., CENSUS, CCS)|
 |townName|string|false|none|Town or city name|
 |uprn|string|false|none|Unique Property Reference Number|
