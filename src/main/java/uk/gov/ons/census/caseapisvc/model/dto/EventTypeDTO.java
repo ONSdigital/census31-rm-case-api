@@ -33,14 +33,8 @@ public enum EventTypeDTO {
   SMS_FULFILMENT,
   @Schema(description = "SMS fulfillment action rule triggered")
   ACTION_RULE_SMS_REQUEST,
-  @Schema(description = "Email fulfillment request processed")
-  EMAIL_FULFILMENT,
-  @Schema(description = "Email fulfillment action rule triggered")
-  ACTION_RULE_EMAIL_REQUEST,
   @Schema(description = "SMS confirmation action rule triggered")
   ACTION_RULE_SMS_CONFIRMATION,
-  @Schema(description = "Email confirmation action rule triggered")
-  ACTION_RULE_EMAIL_CONFIRMATION,
   @Schema(description = "Data erase requested")
   ERASE_DATA
 }
