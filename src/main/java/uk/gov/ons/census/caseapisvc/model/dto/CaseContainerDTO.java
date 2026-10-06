@@ -11,7 +11,7 @@ import lombok.Data;
 @Schema(
     description = "Data Transfer Object representing a census case container",
     example =
-        "{\"caseRef\":\"100000000000001\",\"id\":\"a11e3456-e89b-12d3-a456-426614174000\",\"estabType\":\"HOUSEHOLD\",\"uprn\":\"10008677190\",\"estabUprn\":\"10008677190\",\"collectionExerciseId\":\"b22e3456-e89b-12d3-a456-426614174000\",\"surveyType\":\"CENSUS\",\"addressType\":\"HH\",\"caseType\":\"HH\",\"createdDateTime\":\"2024-01-15T10:30:00Z\",\"addressLine1\":\"Flat 51 Francombe House\",\"addressLine2\":\"Commercial Road\",\"addressLine3\":\"Suite 3\",\"townName\":\"Windleybury\",\"postcode\":\"XX1 0XX\",\"organisationName\":\"Acme Corporation\",\"addressLevel\":\"U\",\"abpCode\":\"RD06\",\"region\":\"E12000007\",\"latitude\":\"51.5074\",\"longitude\":\"-0.1278\",\"oa\":\"E00073438\",\"lsoa\":\"E01014540\",\"msoa\":\"E02003043\",\"lad\":\"E06000023\",\"lastUpdated\":\"2024-01-20T14:45:00Z\",\"caseEvents\":[],\"secureEstablishment\":false,\"invalid\":false}")
+        "{\"caseRef\":\"100000000000001\",\"id\":\"a11e3456-e89b-12d3-a456-426614174000\",\"estabType\":\"HOUSEHOLD\",\"uprn\":\"10008677190\",\"estabUprn\":\"10008677190\",\"collectionExerciseId\":\"b22e3456-e89b-12d3-a456-426614174000\",\"surveyType\":\"CENSUS\",\"addressType\":\"HH\",\"caseType\":\"HH\",\"createdDateTime\":\"2024-01-15T10:30:00Z\",\"addressLine1\":\"Flat 51 Francombe House\",\"addressLine2\":\"Commercial Road\",\"addressLine3\":\"Suite 3\",\"townName\":\"Windleybury\",\"postcode\":\"XX1 0XX\",\"organisationName\":\"Acme Corporation\",\"addressLevel\":\"U\",\"abpCode\":\"RD06\",\"region\":\"E12000007\",\"latitude\":\"51.5074\",\"longitude\":\"-0.1278\",\"oa\":\"E00073438\",\"lsoa\":\"E01014540\",\"msoa\":\"E02003043\",\"lad\":\"E06000023\",\"lastUpdated\":\"2024-01-20T14:45:00Z\",\"caseEvents\":[],\"secureEstablishment\":false,\"receiptReceived\":true,\"refusalReceived\":false,\"surveyLaunched\":true,\"invalid\":false}")
 public class CaseContainerDTO {
   @Schema(
       description = "Unique numeric reference for the case",
@@ -130,6 +130,21 @@ public class CaseContainerDTO {
 
   @Schema(description = "Indicator whether address is a secure establishment", example = "false")
   private Boolean secureEstablishment;
+
+  @Schema(
+      description = "Flag indicating if receipt has been received from respondent",
+      example = "true")
+  private boolean receiptReceived;
+
+  @Schema(
+      description = "Flag indicating if any refusal has been received for the case",
+      example = "false")
+  private boolean refusalReceived;
+
+  @Schema(
+      description = "Flag indicating if survey has been launched to respondent",
+      example = "true")
+  private boolean surveyLaunched;
 
   @Schema(
       description = "Flag indicating if the case record is marked as invalid",

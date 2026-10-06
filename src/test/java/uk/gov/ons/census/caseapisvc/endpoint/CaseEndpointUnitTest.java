@@ -17,6 +17,7 @@ import uk.gov.ons.census.caseapisvc.service.CaseService;
 import uk.gov.ons.census.common.model.entity.Case;
 import uk.gov.ons.census.common.model.entity.Event;
 import uk.gov.ons.census.common.model.entity.EventType;
+import uk.gov.ons.census.common.model.entity.RefusalType;
 import uk.gov.ons.census.common.model.entity.UacQidLink;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,11 +45,17 @@ class CaseEndpointUnitTest {
   void testFindCaseById_NoEvents() {
     when(caseService.findById(caseId)).thenReturn(caze);
     when(caze.getCaseRef()).thenReturn(12345L);
+    when(caze.isReceiptReceived()).thenReturn(true);
+    when(caze.getRefusalReceived()).thenReturn(RefusalType.HARD_REFUSAL);
+    when(caze.isSurveyLaunched()).thenReturn(true);
 
     CaseContainerDTO dto = caseEndpoint.findCaseById(caseId, false);
 
     assertEquals(caseId, dto.getCaseId());
     assertEquals("12345", dto.getCaseRef());
+    assertTrue(dto.isReceiptReceived());
+    assertTrue(dto.isRefusalReceived());
+    assertTrue(dto.isSurveyLaunched());
     assertTrue(dto.getCaseEvents().isEmpty());
     verify(caseService).findById(caseId);
   }

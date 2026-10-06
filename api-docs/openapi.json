@@ -350,6 +350,9 @@
           "lastUpdated" : "2024-01-20T14:45:00Z",
           "caseEvents" : [ ],
           "secureEstablishment" : false,
+          "receiptReceived" : true,
+          "refusalReceived" : false,
+          "surveyLaunched" : true,
           "invalid" : false
         },
         "properties" : {
@@ -478,6 +481,16 @@
             "description" : "UK postal code",
             "example" : "XX1 0XX"
           },
+          "receiptReceived" : {
+            "type" : "boolean",
+            "description" : "Flag indicating if receipt has been received from respondent",
+            "example" : true
+          },
+          "refusalReceived" : {
+            "type" : "boolean",
+            "description" : "Flag indicating if any refusal has been received for the case",
+            "example" : false
+          },
           "region" : {
             "type" : "string",
             "description" : "Administrative region code (e.g., N12000007, S12000007, E12000007, W12000007)",
@@ -487,6 +500,11 @@
             "type" : "boolean",
             "description" : "Indicator whether address is a secure establishment",
             "example" : false
+          },
+          "surveyLaunched" : {
+            "type" : "boolean",
+            "description" : "Flag indicating if survey has been launched to respondent",
+            "example" : true
           },
           "surveyType" : {
             "type" : "string",

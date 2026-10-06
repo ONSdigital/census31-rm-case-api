@@ -180,6 +180,9 @@ public class CaseEndpoint {
     CaseContainerDTO caseContainerDTO = new CaseContainerDTO();
     caseContainerDTO.setCaseId(caze.getId());
     caseContainerDTO.setAddressType(caze.getAddressType());
+    caseContainerDTO.setReceiptReceived(caze.isReceiptReceived());
+    caseContainerDTO.setRefusalReceived(caze.getRefusalReceived() != null);
+    caseContainerDTO.setSurveyLaunched(caze.isSurveyLaunched());
 
     return caseContainerDTO;
   }
@@ -267,6 +270,9 @@ public class CaseEndpoint {
     caseContainerDTO.setSecureEstablishment(caze.isSecureEstablishment());
     caseContainerDTO.setAddressType(caze.getAddressType());
     caseContainerDTO.setLad(caze.getLad());
+    caseContainerDTO.setReceiptReceived(caze.isReceiptReceived());
+    caseContainerDTO.setRefusalReceived(caze.getRefusalReceived() != null);
+    caseContainerDTO.setSurveyLaunched(caze.isSurveyLaunched());
     return caseContainerDTO;
   }
 
