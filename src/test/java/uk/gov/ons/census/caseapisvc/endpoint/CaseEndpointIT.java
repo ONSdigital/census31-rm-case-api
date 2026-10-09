@@ -314,7 +314,6 @@ public class CaseEndpointIT {
   @Test
   public void getAllCaseDetails() throws IOException, UnirestException {
     Case caze = createOneTestCaseWithEvent();
-
     HttpResponse<JsonNode> response =
         Unirest.get(
                 createUrl("http://localhost:%d/cases/case-details/%s", port, TEST_CASE_ID_1_EXISTS))
@@ -326,6 +325,26 @@ public class CaseEndpointIT {
     CaseDetailsDTO actualCaseDetails = extractCaseDetailsDTOsFromResponse(response);
 
     assertThat(actualCaseDetails.getCaseId()).isEqualTo(caze.getId());
+    assertThat(actualCaseDetails.isRefusalReceived()).isFalse();
+  }
+
+  @Test
+  public void getAllCaseDetailsForRefusedCase() throws IOException, UnirestException {
+    String case_1 = String.valueOf(UUID.randomUUID());
+    Case caze = setupTestCaseWithEvent(case_1);
+    setToRefused(caze);
+
+    HttpResponse<JsonNode> response =
+        Unirest.get(createUrl("http://localhost:%d/cases/case-details/%s", port, case_1))
+            .header("accept", "application/json")
+            .asJson();
+
+    assertThat(response.getStatus()).isEqualTo(OK.value());
+
+    CaseDetailsDTO actualCaseDetails = extractCaseDetailsDTOsFromResponse(response);
+
+    assertThat(String.valueOf(actualCaseDetails.getCaseId())).isEqualTo(case_1);
+    assertThat(actualCaseDetails.isRefusalReceived()).isTrue();
   }
 
   public static CaseDetailsDTO extractCaseDetailsDTOsFromResponse(HttpResponse<JsonNode> response)
@@ -374,6 +393,7 @@ public class CaseEndpointIT {
     caze.setEvents(null);
     caze.setUprn(TEST_UPRN_EXISTS);
     caze.setReceiptReceived(false);
+    caze.setRefusalReceived(null);
     caze.setPostcode(TEST_POSTCODE);
     caze.setCollectionExercise(junkCollectionExercise);
     caseRepository.saveAndFlush(caze);
@@ -523,5 +543,11 @@ public class CaseEndpointIT {
     return caseRepository
         .findById(caze.getId())
         .orElseThrow(() -> new RuntimeException("Case not found!"));
+  }
+
+  private Case setToRefused(Case caze) {
+
+    caze.setRefusalReceived(RefusalType.HARD_REFUSAL);
+    return saveAndRetreiveCase(caze);
   }
 }
