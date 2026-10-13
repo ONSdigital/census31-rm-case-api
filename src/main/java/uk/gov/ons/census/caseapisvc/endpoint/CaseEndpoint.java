@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -216,19 +218,8 @@ public class CaseEndpoint {
     List<CaseEventDTO> caseEvents = new LinkedList<>();
 
     if (includeCaseEvents) {
-      List<UacQidLink> uacQidLinks = caze.getUacQidLinks();
-
-      for (UacQidLink uacQidLink : uacQidLinks) {
-        List<Event> events = uacQidLink.getEvents();
-
-        for (Event event : events) {
-          caseEvents.add(mapCaseEvent(event));
-        }
-      }
-      if (caze.getEvents() != null) {
-        for (Event event : caze.getEvents()) {
-          caseEvents.add(mapCaseEvent(event));
-        }
+      for (Event event : collectEvents(caze)) {
+        caseEvents.add(mapCaseEvent(event));
       }
     }
 
@@ -306,7 +297,8 @@ public class CaseEndpoint {
     caseDetailsDTO.setFieldOfficerId(caze.getFieldOfficerId());
     caseDetailsDTO.setTreatmentCode(caze.getTreatmentCode());
     caseDetailsDTO.setCeExpectedCapacity(caze.getCeExpectedCapacity());
-    caseDetailsDTO.setCollectionExerciseId(caze.getCollectionExercise().getId());
+    caseDetailsDTO.setCollectionExerciseId(
+        caze.getCollectionExercise() != null ? caze.getCollectionExercise().getId() : null);
     caseDetailsDTO.setCreatedDateTime(caze.getCreatedAt());
     caseDetailsDTO.setReceiptReceived(caze.isReceiptReceived());
     caseDetailsDTO.setRefusalReceived(caze.getRefusalReceived() != null);
@@ -326,7 +318,7 @@ public class CaseEndpoint {
     caseEventDTO.setDescription(event.getDescription());
     caseEventDTO.setDateTime(event.getDateTime());
     caseEventDTO.setId(event.getId());
-    caseEventDTO.setType(EventTypeDTO.valueOf(event.getType().name()));
+    caseEventDTO.setType(EventTypeDTO.fromEventType(event.getType()));
     return caseEventDTO;
   }
 
@@ -352,20 +344,40 @@ public class CaseEndpoint {
 
     List<CaseDetailsEventDTO> caseEvents = new LinkedList<>();
 
-    List<UacQidLink> uacQidLinks = caze.getUacQidLinks();
-
-    for (UacQidLink uacQidLink : uacQidLinks) {
-      List<Event> events = uacQidLink.getEvents();
-
-      for (Event event : events) {
-        // RM_UAC_CREATED event redacted remove UACs
-        // if (!event.getEventType().equals(EventType.RM_UAC_CREATED)) {
-        caseEvents.add(mapCaseDetailsEvent(event));
-        // }
-      }
+    for (Event event : collectEvents(caze)) {
+      caseEvents.add(mapCaseDetailsEvent(event));
     }
+
     caseDetailsDTO.setEvents(caseEvents);
 
     return caseDetailsDTO;
+  }
+
+  private List<Event> collectEvents(Case caze) {
+    List<Event> events = new ArrayList<>();
+
+    for (UacQidLink uacQidLink : safeList(caze.getUacQidLinks())) {
+      if (uacQidLink == null) {
+        continue;
+      }
+
+      for (Event event : safeList(uacQidLink.getEvents())) {
+        if (event != null) {
+          events.add(event);
+        }
+      }
+    }
+
+    for (Event event : safeList(caze.getEvents())) {
+      if (event != null) {
+        events.add(event);
+      }
+    }
+
+    return events;
+  }
+
+  private <T> List<T> safeList(List<T> values) {
+    return values == null ? Collections.emptyList() : values;
   }
 }

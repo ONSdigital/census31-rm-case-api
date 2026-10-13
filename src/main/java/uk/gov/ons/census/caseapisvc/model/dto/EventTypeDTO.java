@@ -1,6 +1,7 @@
 package uk.gov.ons.census.caseapisvc.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import uk.gov.ons.census.common.model.entity.EventType;
 
 @Schema(
     description = "Enumeration of all possible event types that can occur in the census RM system",
@@ -36,5 +37,50 @@ public enum EventTypeDTO {
   @Schema(description = "SMS confirmation action rule triggered")
   ACTION_RULE_SMS_CONFIRMATION,
   @Schema(description = "Data erase requested")
-  ERASE_DATA
+  ERASE_DATA,
+  @Schema(description = "Telephone capture event processed")
+  TELEPHONE_CAPTURE,
+  @Schema(description = "SMS fulfillment confirmation processed")
+  FULFILMENT_SMS_CONFIRMATION,
+  @Schema(description = "Case update event processed")
+  CASE_UPDATE,
+  @Schema(description = "UAC update event processed")
+  UAC_UPDATE,
+  @Schema(description = "Fulfilment request event processed")
+  FULFILMENT_REQUEST,
+  @Schema(description = "Field case updated event processed")
+  FIELD_CASE_UPDATED,
+  @Schema(description = "Questionnaire linked event processed")
+  QUESTIONNAIRE_LINKED,
+  @Schema(description = "Fulfilment confirmation event processed")
+  FULFILMENT_CONFIRMATION,
+  @Schema(description = "Fulfilment undelivered event processed")
+  FULFILMENT_UNDELIVERED,
+  @Schema(description = "Event type not yet mapped by this API version")
+  UNKNOWN;
+
+  /**
+   * Maps persisted event types to the API enum while preserving legacy public names where they
+   * differ from the canonical entity enum.
+   */
+  public static EventTypeDTO fromEventType(EventType eventType) {
+    if (eventType == null) {
+      return UNKNOWN;
+    }
+
+    return switch (eventType) {
+      case RESPONSE_RECEIVED -> RECEIPT;
+      case REFUSAL_RECEIVED -> REFUSAL;
+      case ADDRESS_NOT_VALID -> INVALID_CASE;
+      case SURVEY_LAUNCHED -> EQ_LAUNCH;
+      case RESPONDENT_AUTHENTICATED -> UAC_AUTHENTICATION;
+      default -> {
+        try {
+          yield EventTypeDTO.valueOf(eventType.name());
+        } catch (IllegalArgumentException ignored) {
+          yield UNKNOWN;
+        }
+      }
+    };
+  }
 }

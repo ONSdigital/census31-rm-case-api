@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.ons.census.caseapisvc.model.dto.CaseContainerDTO;
 import uk.gov.ons.census.caseapisvc.model.dto.CaseDetailsDTO;
+import uk.gov.ons.census.caseapisvc.model.dto.CaseDetailsEventDTO;
 import uk.gov.ons.census.caseapisvc.model.repository.*;
 import uk.gov.ons.census.common.model.entity.*;
 
@@ -150,6 +151,67 @@ public class CaseEndpointIT {
 
     assertThat(actualData.getCaseId()).isEqualTo(UUID.fromString(TEST_CASE_ID_1_EXISTS));
     assertThat(actualData.getCaseEvents().size()).isEqualTo(1);
+  }
+
+  @Test
+  public void shouldRetrieveCaseContainerWithUacAndCaseLevelEventsWhenSearchingByCaseId()
+      throws Exception {
+    String caseId = String.valueOf(UUID.randomUUID());
+    Case caze = setupTestCaseWithEvent(caseId);
+
+    addCaseLevelEvent(caze, EventType.NEW_CASE, "Case level event");
+
+    HttpResponse<JsonNode> response =
+        Unirest.get(createUrl("http://localhost:%d/cases/%s", port, caseId))
+            .header("accept", "application/json")
+            .queryString("caseEvents", "true")
+            .asJson();
+
+    assertThat(response.getStatus()).isEqualTo(OK.value());
+
+    CaseContainerDTO actualData = extractCaseContainerDTOFromResponse(response);
+    List<String> eventDescriptions =
+        actualData.getCaseEvents().stream().map(event -> event.getDescription()).toList();
+
+    assertThat(actualData.getCaseEvents()).hasSize(2);
+    assertThat(eventDescriptions).contains("description", "Case level event");
+  }
+
+  @Test
+  public void shouldMapCanonicalEventTypesWhenReturningCaseContainerEvents() throws Exception {
+    String caseId = String.valueOf(UUID.randomUUID());
+    Case caze = setupTestCaseWithEvent(caseId);
+
+    addCaseLevelEvent(caze, EventType.REFUSAL_RECEIVED, "Refusal Received");
+    addCaseLevelEvent(caze, EventType.ADDRESS_NOT_VALID, "Invalid address");
+    addCaseLevelEvent(caze, EventType.CASE_UPDATE, "Case update");
+    addCaseLevelEvent(caze, EventType.FIELD_CASE_UPDATED, "Field case updated");
+    addUacLevelEvent(caze, EventType.SURVEY_LAUNCHED, "Survey launched");
+    addUacLevelEvent(caze, EventType.RESPONSE_RECEIVED, "Receipt received");
+    addUacLevelEvent(caze, EventType.RESPONDENT_AUTHENTICATED, "Respondent authenticated");
+
+    HttpResponse<JsonNode> response =
+        Unirest.get(createUrl("http://localhost:%d/cases/%s", port, caseId))
+            .header("accept", "application/json")
+            .queryString("caseEvents", "true")
+            .asJson();
+
+    assertThat(response.getStatus()).isEqualTo(OK.value());
+
+    CaseContainerDTO actualData = extractCaseContainerDTOFromResponse(response);
+    List<String> eventTypes =
+        actualData.getCaseEvents().stream().map(event -> event.getType().name()).toList();
+
+    assertThat(eventTypes)
+        .contains(
+            "REFUSAL",
+            "INVALID_CASE",
+            "EQ_LAUNCH",
+            "RECEIPT",
+            "UAC_AUTHENTICATION",
+            "CASE_UPDATE",
+            "FIELD_CASE_UPDATED")
+        .doesNotContain("UNKNOWN");
   }
 
   @Test
@@ -347,6 +409,36 @@ public class CaseEndpointIT {
     assertThat(actualCaseDetails.isRefusalReceived()).isTrue();
   }
 
+  @Test
+  public void shouldIncludeRefusalInvalidAndSurveyLaunchedEventsInCaseDetails()
+      throws IOException, UnirestException {
+    String caseId = String.valueOf(UUID.randomUUID());
+    Case caze = setupTestCaseWithEvent(caseId);
+
+    caze.setRefusalReceived(RefusalType.HARD_REFUSAL);
+    caze.setInvalid(true);
+    caze = saveAndRetreiveCase(caze);
+
+    addCaseLevelEvent(caze, EventType.REFUSAL_RECEIVED, "Refusal Received");
+    addCaseLevelEvent(caze, EventType.ADDRESS_NOT_VALID, "Invalid address");
+    addUacLevelEvent(caze, EventType.SURVEY_LAUNCHED, "Survey launched");
+
+    HttpResponse<JsonNode> response =
+        Unirest.get(createUrl("http://localhost:%d/cases/case-details/%s", port, caseId))
+            .header("accept", "application/json")
+            .asJson();
+
+    assertThat(response.getStatus()).isEqualTo(OK.value());
+
+    CaseDetailsDTO actualCaseDetails = extractCaseDetailsDTOsFromResponse(response);
+    List<String> eventTypes =
+        actualCaseDetails.getEvents().stream().map(CaseDetailsEventDTO::getEventType).toList();
+
+    assertThat(actualCaseDetails.isRefusalReceived()).isTrue();
+    assertThat(actualCaseDetails.isInvalid()).isTrue();
+    assertThat(eventTypes).contains("REFUSAL_RECEIVED", "ADDRESS_NOT_VALID", "SURVEY_LAUNCHED");
+  }
+
   public static CaseDetailsDTO extractCaseDetailsDTOsFromResponse(HttpResponse<JsonNode> response)
       throws IOException {
     return mapper.readValue(response.getBody().getObject().toString(), CaseDetailsDTO.class);
@@ -492,6 +584,58 @@ public class CaseEndpointIT {
     return caseRepository
         .findById(caze.getId())
         .orElseThrow(() -> new RuntimeException("Case not found!"));
+  }
+
+  private void addCaseLevelEvent(Case caze, EventType eventType, String description) {
+    addCaseLevelEvent(caze, eventType, description, OffsetDateTime.now());
+  }
+
+  private void addCaseLevelEvent(
+      Case caze, EventType eventType, String description, OffsetDateTime eventDateTime) {
+    Event event = buildEvent(eventType, description, eventDateTime);
+    event.setCaze(caze);
+    event.setUacQidLink(null);
+    eventRepository.saveAndFlush(event);
+  }
+
+  private void addUacLevelEvent(Case caze, EventType eventType, String description) {
+    addUacLevelEvent(caze, eventType, description, OffsetDateTime.now());
+  }
+
+  private void addUacLevelEvent(
+      Case caze, EventType eventType, String description, OffsetDateTime eventDateTime) {
+    UacQidLink uacQidLink =
+        uacQidLinkRepository.findAll().stream()
+            .filter(link -> link.getCaze() != null && link.getCaze().getId().equals(caze.getId()))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("UacQidLink not found for case"));
+
+    Event event = buildEvent(eventType, description, eventDateTime);
+    event.setUacQidLink(uacQidLink);
+    event.setCaze(null);
+    eventRepository.saveAndFlush(event);
+  }
+
+  private Event buildEvent(EventType eventType, String description) {
+    return buildEvent(eventType, description, OffsetDateTime.now());
+  }
+
+  private Event buildEvent(EventType eventType, String description, OffsetDateTime eventDateTime) {
+    Event event = new Event();
+
+    event.setId(UUID.randomUUID());
+    event.setType(eventType);
+    event.setDescription(description);
+    event.setChannel("RM");
+    event.setSource("case-endpoint-it");
+    event.setCorrelationId(UUID.randomUUID());
+    event.setMessageId(UUID.randomUUID());
+    event.setPayload("{}");
+    event.setCreatedBy("it-test");
+    event.setDateTime(eventDateTime);
+    event.setProcessedAt(eventDateTime);
+    event.setMessageTimestamp(eventDateTime);
+    return event;
   }
 
   private String createUrl(String urlFormat, int port, String param1) {

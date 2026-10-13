@@ -874,6 +874,16 @@ Status Code **200**
 |eventType|ACTION_RULE_SMS_REQUEST|
 |eventType|ACTION_RULE_SMS_CONFIRMATION|
 |eventType|ERASE_DATA|
+|eventType|TELEPHONE_CAPTURE|
+|eventType|FULFILMENT_SMS_CONFIRMATION|
+|eventType|CASE_UPDATE|
+|eventType|UAC_UPDATE|
+|eventType|FULFILMENT_REQUEST|
+|eventType|FIELD_CASE_UPDATED|
+|eventType|QUESTIONNAIRE_LINKED|
+|eventType|FULFILMENT_CONFIRMATION|
+|eventType|FULFILMENT_UNDELIVERED|
+|eventType|UNKNOWN|
 
 <aside class="success">
 This operation does not require authentication
@@ -1557,6 +1567,16 @@ Status Code **200**
 |eventType|ACTION_RULE_SMS_REQUEST|
 |eventType|ACTION_RULE_SMS_CONFIRMATION|
 |eventType|ERASE_DATA|
+|eventType|TELEPHONE_CAPTURE|
+|eventType|FULFILMENT_SMS_CONFIRMATION|
+|eventType|CASE_UPDATE|
+|eventType|UAC_UPDATE|
+|eventType|FULFILMENT_REQUEST|
+|eventType|FIELD_CASE_UPDATED|
+|eventType|QUESTIONNAIRE_LINKED|
+|eventType|FULFILMENT_CONFIRMATION|
+|eventType|FULFILMENT_UNDELIVERED|
+|eventType|UNKNOWN|
 
 <aside class="success">
 This operation does not require authentication
@@ -2058,6 +2078,16 @@ Enumeration of all possible event types that can occur in the census RM system
 |*anonymous*|ACTION_RULE_SMS_REQUEST|
 |*anonymous*|ACTION_RULE_SMS_CONFIRMATION|
 |*anonymous*|ERASE_DATA|
+|*anonymous*|TELEPHONE_CAPTURE|
+|*anonymous*|FULFILMENT_SMS_CONFIRMATION|
+|*anonymous*|CASE_UPDATE|
+|*anonymous*|UAC_UPDATE|
+|*anonymous*|FULFILMENT_REQUEST|
+|*anonymous*|FIELD_CASE_UPDATED|
+|*anonymous*|QUESTIONNAIRE_LINKED|
+|*anonymous*|FULFILMENT_CONFIRMATION|
+|*anonymous*|FULFILMENT_UNDELIVERED|
+|*anonymous*|UNKNOWN|
 
 <h2 id="tocS_NewQidLink">NewQidLink</h2>
 <!-- backwards compatibility -->
