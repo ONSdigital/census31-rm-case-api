@@ -860,11 +860,12 @@ Status Code **200**
 |Property|Value|
 |---|---|
 |eventType|NEW_CASE|
-|eventType|RECEIPT|
-|eventType|REFUSAL|
-|eventType|INVALID_CASE|
-|eventType|EQ_LAUNCH|
-|eventType|UAC_AUTHENTICATION|
+|eventType|RESPONSE_RECEIVED|
+|eventType|REFUSAL_RECEIVED|
+|eventType|ERASE_DATA|
+|eventType|SURVEY_LAUNCHED|
+|eventType|RESPONDENT_AUTHENTICATED|
+|eventType|TELEPHONE_CAPTURE|
 |eventType|PRINT_FULFILMENT|
 |eventType|EXPORT_FILE|
 |eventType|DEACTIVATE_UAC|
@@ -873,7 +874,16 @@ Status Code **200**
 |eventType|SMS_FULFILMENT|
 |eventType|ACTION_RULE_SMS_REQUEST|
 |eventType|ACTION_RULE_SMS_CONFIRMATION|
-|eventType|ERASE_DATA|
+|eventType|FULFILMENT_SMS_CONFIRMATION|
+|eventType|CASE_UPDATE|
+|eventType|UAC_UPDATE|
+|eventType|FULFILMENT_REQUEST|
+|eventType|FIELD_CASE_UPDATED|
+|eventType|QUESTIONNAIRE_LINKED|
+|eventType|FULFILMENT_CONFIRMATION|
+|eventType|FULFILMENT_UNDELIVERED|
+|eventType|ADDRESS_NOT_VALID|
+|eventType|UNKNOWN|
 
 <aside class="success">
 This operation does not require authentication
@@ -1543,11 +1553,12 @@ Status Code **200**
 |Property|Value|
 |---|---|
 |eventType|NEW_CASE|
-|eventType|RECEIPT|
-|eventType|REFUSAL|
-|eventType|INVALID_CASE|
-|eventType|EQ_LAUNCH|
-|eventType|UAC_AUTHENTICATION|
+|eventType|RESPONSE_RECEIVED|
+|eventType|REFUSAL_RECEIVED|
+|eventType|ERASE_DATA|
+|eventType|SURVEY_LAUNCHED|
+|eventType|RESPONDENT_AUTHENTICATED|
+|eventType|TELEPHONE_CAPTURE|
 |eventType|PRINT_FULFILMENT|
 |eventType|EXPORT_FILE|
 |eventType|DEACTIVATE_UAC|
@@ -1556,7 +1567,16 @@ Status Code **200**
 |eventType|SMS_FULFILMENT|
 |eventType|ACTION_RULE_SMS_REQUEST|
 |eventType|ACTION_RULE_SMS_CONFIRMATION|
-|eventType|ERASE_DATA|
+|eventType|FULFILMENT_SMS_CONFIRMATION|
+|eventType|CASE_UPDATE|
+|eventType|UAC_UPDATE|
+|eventType|FULFILMENT_REQUEST|
+|eventType|FIELD_CASE_UPDATED|
+|eventType|QUESTIONNAIRE_LINKED|
+|eventType|FULFILMENT_CONFIRMATION|
+|eventType|FULFILMENT_UNDELIVERED|
+|eventType|ADDRESS_NOT_VALID|
+|eventType|UNKNOWN|
 
 <aside class="success">
 This operation does not require authentication
@@ -1986,7 +2006,7 @@ Detailed Data Transfer Object containing event attributes for case details respo
 |eventPayload|string|false|none|JSON payload containing event-specific data|
 |eventSource|string|false|none|Source system that generated the event (e.g., UAC_SERVICE, PRINT_SERVICE)|
 |eventTransactionId|string(uuid)|false|none|Unique transaction identifier for this event|
-|eventType|string|true|none|Type of event (e.g., NEW_CASE, RECEIPT, REFUSAL, EQ_LAUNCH, UAC_AUTHENTICATION)|
+|eventType|string|true|none|Type of event (e.g., NEW_CASE, RESPONSE_RECEIVED, REFUSAL_RECEIVED, SURVEY_LAUNCHED, RESPONDENT_AUTHENTICATED)|
 |id|string(uuid)|true|none|Unique event identifier (UUID)|
 |messageTimestamp|string(date-time)|false|none|Message timestamp from the originating system|
 |rmEventProcessed|string(date-time)|false|none|Date and time when the event was processed by RM|
@@ -2016,7 +2036,7 @@ Data Transfer Object representing an event associated with a case
 |---|---|---|---|---|
 |createdDateTime|string(date-time)|true|none|Date and time when the event was created|
 |description|string|false|none|Human-readable description of the event|
-|eventType|[EventTypeDTO](#schemaeventtypedto)|true|none|Type of event that occurred on the case (e.g., NEW_CASE, RECEIPT, REFUSAL, INVALID_CASE, EQ_LAUNCH)|
+|eventType|[EventTypeDTO](#schemaeventtypedto)|true|none|Type of event that occurred on the case (e.g., NEW_CASE, RESPONSE_RECEIVED, REFUSAL_RECEIVED, ADDRESS_NOT_VALID, SURVEY_LAUNCHED)|
 |id|string(uuid)|true|none|Unique event identifier (UUID)|
 
 <h2 id="tocS_EventTypeDTO">EventTypeDTO</h2>
@@ -2044,11 +2064,12 @@ Enumeration of all possible event types that can occur in the census RM system
 |Property|Value|
 |---|---|
 |*anonymous*|NEW_CASE|
-|*anonymous*|RECEIPT|
-|*anonymous*|REFUSAL|
-|*anonymous*|INVALID_CASE|
-|*anonymous*|EQ_LAUNCH|
-|*anonymous*|UAC_AUTHENTICATION|
+|*anonymous*|RESPONSE_RECEIVED|
+|*anonymous*|REFUSAL_RECEIVED|
+|*anonymous*|ERASE_DATA|
+|*anonymous*|SURVEY_LAUNCHED|
+|*anonymous*|RESPONDENT_AUTHENTICATED|
+|*anonymous*|TELEPHONE_CAPTURE|
 |*anonymous*|PRINT_FULFILMENT|
 |*anonymous*|EXPORT_FILE|
 |*anonymous*|DEACTIVATE_UAC|
@@ -2057,7 +2078,16 @@ Enumeration of all possible event types that can occur in the census RM system
 |*anonymous*|SMS_FULFILMENT|
 |*anonymous*|ACTION_RULE_SMS_REQUEST|
 |*anonymous*|ACTION_RULE_SMS_CONFIRMATION|
-|*anonymous*|ERASE_DATA|
+|*anonymous*|FULFILMENT_SMS_CONFIRMATION|
+|*anonymous*|CASE_UPDATE|
+|*anonymous*|UAC_UPDATE|
+|*anonymous*|FULFILMENT_REQUEST|
+|*anonymous*|FIELD_CASE_UPDATED|
+|*anonymous*|QUESTIONNAIRE_LINKED|
+|*anonymous*|FULFILMENT_CONFIRMATION|
+|*anonymous*|FULFILMENT_UNDELIVERED|
+|*anonymous*|ADDRESS_NOT_VALID|
+|*anonymous*|UNKNOWN|
 
 <h2 id="tocS_NewQidLink">NewQidLink</h2>
 <!-- backwards compatibility -->

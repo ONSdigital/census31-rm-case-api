@@ -22,7 +22,7 @@ public class CaseEventDTO {
   @JsonProperty("eventType")
   @Schema(
       description =
-          "Type of event that occurred on the case (e.g., NEW_CASE, RECEIPT, REFUSAL, INVALID_CASE, EQ_LAUNCH)",
+          "Type of event that occurred on the case (e.g., NEW_CASE, RESPONSE_RECEIVED, REFUSAL_RECEIVED, ADDRESS_NOT_VALID, SURVEY_LAUNCHED)",
       example = "NEW_CASE",
       requiredMode = Schema.RequiredMode.REQUIRED)
   private EventTypeDTO type;
