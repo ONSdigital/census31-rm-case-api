@@ -31,6 +31,8 @@ import uk.gov.ons.census.common.model.entity.UacQidLink;
 @Timed
 @Tag(name = "Case Endpoint", description = "Services for querying and retrieving census cases")
 public class CaseEndpoint {
+  private static final String SURVEY_TYPE = "CENSUS";
+
   private final CaseService caseService;
 
   @Autowired
@@ -182,6 +184,7 @@ public class CaseEndpoint {
     CaseContainerDTO caseContainerDTO = new CaseContainerDTO();
     caseContainerDTO.setCaseId(caze.getId());
     caseContainerDTO.setAddressType(caze.getAddressType());
+    caseContainerDTO.setSurveyType(SURVEY_TYPE);
     caseContainerDTO.setReceiptReceived(caze.isReceiptReceived());
     caseContainerDTO.setRefusalReceived(caze.getRefusalReceived() != null);
     caseContainerDTO.setSurveyLaunched(caze.isSurveyLaunched());
@@ -241,6 +244,7 @@ public class CaseEndpoint {
     caseContainerDTO.setEstabUprn(caze.getEstabUprn());
     caseContainerDTO.setCollectionExerciseId(
         caze.getCollectionExercise() != null ? caze.getCollectionExercise().getId() : null);
+    caseContainerDTO.setSurveyType(SURVEY_TYPE);
     caseContainerDTO.setCaseType(caze.getCaseType());
     caseContainerDTO.setCreatedDateTime(caze.getCreatedAt());
     caseContainerDTO.setAddressLine1(caze.getAddressLine1());
@@ -297,8 +301,7 @@ public class CaseEndpoint {
     caseDetailsDTO.setFieldOfficerId(caze.getFieldOfficerId());
     caseDetailsDTO.setTreatmentCode(caze.getTreatmentCode());
     caseDetailsDTO.setCeExpectedCapacity(caze.getCeExpectedCapacity());
-    caseDetailsDTO.setCollectionExerciseId(
-        caze.getCollectionExercise() != null ? caze.getCollectionExercise().getId() : null);
+    caseDetailsDTO.setCollectionExerciseId(caze.getCollectionExercise().getId());
     caseDetailsDTO.setCreatedDateTime(caze.getCreatedAt());
     caseDetailsDTO.setReceiptReceived(caze.isReceiptReceived());
     caseDetailsDTO.setRefusalReceived(caze.getRefusalReceived() != null);

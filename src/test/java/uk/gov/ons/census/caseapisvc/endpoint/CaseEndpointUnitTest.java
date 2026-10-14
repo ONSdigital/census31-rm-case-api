@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ons.census.caseapisvc.model.dto.*;
 import uk.gov.ons.census.caseapisvc.service.CaseService;
 import uk.gov.ons.census.common.model.entity.Case;
+import uk.gov.ons.census.common.model.entity.CollectionExercise;
 import uk.gov.ons.census.common.model.entity.Event;
 import uk.gov.ons.census.common.model.entity.EventType;
 import uk.gov.ons.census.common.model.entity.RefusalType;
@@ -54,6 +55,7 @@ class CaseEndpointUnitTest {
 
     assertEquals(caseId, dto.getCaseId());
     assertEquals("12345", dto.getCaseRef());
+    assertEquals("CENSUS", dto.getSurveyType());
     assertTrue(dto.isReceiptReceived());
     assertTrue(dto.isRefusalReceived());
     assertTrue(dto.isSurveyLaunched());
@@ -130,6 +132,7 @@ class CaseEndpointUnitTest {
 
     assertEquals(caseId, dto.getCaseId());
     assertEquals("HH", dto.getAddressType());
+    assertEquals("CENSUS", dto.getSurveyType());
     verify(caseService).findCaseByQid("Q123");
   }
 
@@ -199,15 +202,18 @@ class CaseEndpointUnitTest {
   }
 
   @Test
-  void testGetAllCaseDetailsByCaseId_NullSafeEventAndCollectionExerciseHandling() {
+  void testGetAllCaseDetailsByCaseId_WithNullEventCollections() {
+    UUID collectionExerciseId = UUID.randomUUID();
+    CollectionExercise collectionExercise = mock(CollectionExercise.class);
+    when(collectionExercise.getId()).thenReturn(collectionExerciseId);
     when(caseService.findById(caseId)).thenReturn(caze);
-    when(caze.getCollectionExercise()).thenReturn(null);
+    when(caze.getCollectionExercise()).thenReturn(collectionExercise);
     when(caze.getUacQidLinks()).thenReturn(null);
     when(caze.getEvents()).thenReturn(null);
 
     CaseDetailsDTO dto = caseEndpoint.getAllCaseDetailsByCaseId(caseId);
 
-    assertNull(dto.getCollectionExerciseId());
+    assertEquals(collectionExerciseId, dto.getCollectionExerciseId());
     assertNotNull(dto.getEvents());
     assertTrue(dto.getEvents().isEmpty());
   }
