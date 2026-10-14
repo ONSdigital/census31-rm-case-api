@@ -10,16 +10,18 @@ import uk.gov.ons.census.common.model.entity.EventType;
 public enum EventTypeDTO {
   @Schema(description = "New case created")
   NEW_CASE,
-  @Schema(description = "Receipt received from respondent")
-  RECEIPT,
+  @Schema(description = "Response received from respondent")
+  RESPONSE_RECEIVED,
   @Schema(description = "Refusal received from respondent")
-  REFUSAL,
-  @Schema(description = "Case marked as invalid")
-  INVALID_CASE,
+  REFUSAL_RECEIVED,
+  @Schema(description = "Data erase requested")
+  ERASE_DATA,
   @Schema(description = "EQ (eCollect) questionnaire launched")
-  EQ_LAUNCH,
+  SURVEY_LAUNCHED,
   @Schema(description = "UAC authenticated by respondent")
-  UAC_AUTHENTICATION,
+  RESPONDENT_AUTHENTICATED,
+  @Schema(description = "Telephone capture event processed")
+  TELEPHONE_CAPTURE,
   @Schema(description = "Print fulfillment request processed")
   PRINT_FULFILMENT,
   @Schema(description = "Data export file generated")
@@ -36,10 +38,6 @@ public enum EventTypeDTO {
   ACTION_RULE_SMS_REQUEST,
   @Schema(description = "SMS confirmation action rule triggered")
   ACTION_RULE_SMS_CONFIRMATION,
-  @Schema(description = "Data erase requested")
-  ERASE_DATA,
-  @Schema(description = "Telephone capture event processed")
-  TELEPHONE_CAPTURE,
   @Schema(description = "SMS fulfillment confirmation processed")
   FULFILMENT_SMS_CONFIRMATION,
   @Schema(description = "Case update event processed")
@@ -56,31 +54,21 @@ public enum EventTypeDTO {
   FULFILMENT_CONFIRMATION,
   @Schema(description = "Fulfilment undelivered event processed")
   FULFILMENT_UNDELIVERED,
+  @Schema(description = "Case marked as invalid")
+  ADDRESS_NOT_VALID,
   @Schema(description = "Event type not yet mapped by this API version")
   UNKNOWN;
 
-  /**
-   * Maps persisted event types to the API enum while preserving legacy public names where they
-   * differ from the canonical entity enum.
-   */
+  /** Maps persisted common-model event types to API enum values. */
   public static EventTypeDTO fromEventType(EventType eventType) {
     if (eventType == null) {
       return UNKNOWN;
     }
 
-    return switch (eventType) {
-      case RESPONSE_RECEIVED -> RECEIPT;
-      case REFUSAL_RECEIVED -> REFUSAL;
-      case ADDRESS_NOT_VALID -> INVALID_CASE;
-      case SURVEY_LAUNCHED -> EQ_LAUNCH;
-      case RESPONDENT_AUTHENTICATED -> UAC_AUTHENTICATION;
-      default -> {
-        try {
-          yield EventTypeDTO.valueOf(eventType.name());
-        } catch (IllegalArgumentException ignored) {
-          yield UNKNOWN;
-        }
-      }
-    };
+    try {
+      return EventTypeDTO.valueOf(eventType.name());
+    } catch (IllegalArgumentException ignored) {
+      return UNKNOWN;
+    }
   }
 }

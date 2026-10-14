@@ -204,11 +204,11 @@ public class CaseEndpointIT {
 
     assertThat(eventTypes)
         .contains(
-            "REFUSAL",
-            "INVALID_CASE",
-            "EQ_LAUNCH",
-            "RECEIPT",
-            "UAC_AUTHENTICATION",
+            "REFUSAL_RECEIVED",
+            "ADDRESS_NOT_VALID",
+            "SURVEY_LAUNCHED",
+            "RESPONSE_RECEIVED",
+            "RESPONDENT_AUTHENTICATED",
             "CASE_UPDATE",
             "FIELD_CASE_UPDATED")
         .doesNotContain("UNKNOWN");

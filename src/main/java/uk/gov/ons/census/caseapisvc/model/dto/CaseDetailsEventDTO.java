@@ -21,7 +21,7 @@ public class CaseDetailsEventDTO {
 
   @Schema(
       description =
-          "Type of event (e.g., NEW_CASE, RECEIPT, REFUSAL, EQ_LAUNCH, UAC_AUTHENTICATION)",
+          "Type of event (e.g., NEW_CASE, RESPONSE_RECEIVED, REFUSAL_RECEIVED, SURVEY_LAUNCHED, RESPONDENT_AUTHENTICATED)",
       example = "NEW_CASE",
       requiredMode = Schema.RequiredMode.REQUIRED)
   private String eventType;

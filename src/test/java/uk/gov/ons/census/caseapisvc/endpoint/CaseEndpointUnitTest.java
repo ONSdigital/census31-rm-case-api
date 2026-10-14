@@ -299,11 +299,11 @@ class CaseEndpointUnitTest {
 
     assertThat(mappedTypes)
         .contains(
-            EventTypeDTO.REFUSAL,
-            EventTypeDTO.INVALID_CASE,
-            EventTypeDTO.EQ_LAUNCH,
-            EventTypeDTO.RECEIPT,
-            EventTypeDTO.UAC_AUTHENTICATION,
+            EventTypeDTO.REFUSAL_RECEIVED,
+            EventTypeDTO.ADDRESS_NOT_VALID,
+            EventTypeDTO.SURVEY_LAUNCHED,
+            EventTypeDTO.RESPONSE_RECEIVED,
+            EventTypeDTO.RESPONDENT_AUTHENTICATED,
             EventTypeDTO.CASE_UPDATE,
             EventTypeDTO.FIELD_CASE_UPDATED);
 
